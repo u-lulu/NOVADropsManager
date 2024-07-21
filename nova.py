@@ -153,5 +153,17 @@ async def help(ctx):
 	
 	await ctx.respond(message)
 
+@bot.command(description="Shuts down the bot. Will not work unless you own the bot.")
+async def shutdown(ctx):
+	if ctx.author.id == ownerid:
+		print(f"Shutdown request accepted ({ctx.author.id})")
+		await ctx.defer()
+		await save_channel_data()
+		await ctx.respond(f"Restarting.")
+		await bot.close()
+	else:
+		print(f"Shutdown request denied ({ctx.author.id})")
+		await ctx.respond(f"Only <@{ownerid}> may use this command.",ephemeral=True)
+
 print("Starting bot session")
 bot.run(token)
