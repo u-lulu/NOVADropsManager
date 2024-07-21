@@ -2,6 +2,7 @@ import discord
 import json
 import random as rnd
 import os
+from io import BytesIO
 from copy import deepcopy
 
 bot = discord.Bot()
@@ -28,6 +29,14 @@ num_to_die = {
 	5: "5️⃣",
 	6: "6️⃣"
 }
+
+async def response_with_file_fallback(ctx: discord.ApplicationContext,message,eph=False):
+	if len(message) > 2000:
+		filedata = BytesIO(message.encode('utf-8'))
+		await ctx.respond("The message is too long to send. Please view the attached file.",file=discord.File(filedata,filename='response.md'),ephemeral=eph)
+		print(f"Sent response to /{ctx.command.qualified_name} as file")
+	else:
+		await ctx.respond(message,ephemeral=eph)
 
 def save_channel_data():
 	with open('channels.json','w') as outfile:
@@ -66,10 +75,14 @@ async def add_drops(ctx, amount: discord.Option(discord.SlashCommandOptionType.i
 	if amount == 0:
 		await ctx.respond("You cannot add 0 drops to the pool.",ephemeral=True)
 		return
-	  
-	await ctx.defer()
 
 	c = cid(ctx)
+
+	if amount < 0 and channel_data.get(c,0) <= 0:
+		await ctx.respond("There are no drops in the pool to remove.",ephemeral=True)
+		return
+	
+	await ctx.defer()
 	
 	channel_data[c] = channel_data.get(c,0) + amount
 	
@@ -120,13 +133,25 @@ async def generate_drops(ctx):
 		message += num_to_die[val]
 	
 	message += "\n## Totals"
-	for key in drops:
+	for key in sorted(list(drops.keys())):
 		message += f"\n- {key}: {drops[key]}"
+	
+	message += "\n-# The Sparks should decide who wants the drops generated this round.\n-# Any drops that aren't claimed disappear."
 
-	await ctx.respond(message)
+	await response_with_file_fallback(ctx,message)
 
 	del channel_data[c]
 	save_channel_data()
+
+@bot.command(description="Shows the help info for this bot.")
+async def help(ctx):
+	await ctx.defer()
+	
+	message = "# Commands"
+	for cmd in bot.application_commands:
+		message += f"\n- {cmd.mention}: {cmd.description}"
+	
+	await ctx.respond(message)
 
 print("Starting bot session")
 bot.run(token)
