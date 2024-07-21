@@ -5,7 +5,7 @@ import os
 from io import BytesIO
 from copy import deepcopy
 
-bot = discord.Bot()
+bot = discord.Bot(activity=discord.Game(name='Loading...'),status=discord.Status.dnd)
 
 print("Loading token")
 token_file = open('token.json')
@@ -57,6 +57,11 @@ def drop():
 		return ("Fuel",value)
 	else:
 		return ("No drop",value)
+
+@bot.event
+async def on_ready():
+	await bot.change_presence(activity=discord.Game(name='NOVA'),status=discord.Status.online)
+	print(f"{bot.user} is ready and online in {len(bot.guilds)} guilds!")
 
 @bot.event
 async def on_application_command(ctx):
