@@ -163,7 +163,7 @@ async def shutdown(ctx):
 	if ctx.author.id == ownerid:
 		print(f"Shutdown request accepted ({ctx.author.id})")
 		await ctx.defer()
-		await save_channel_data()
+		save_channel_data()
 		await ctx.respond(f"Restarting.")
 		await bot.close()
 	else:
