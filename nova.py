@@ -30,6 +30,12 @@ num_to_die = {
 	6: "6️⃣"
 }
 
+@bot.event
+async def on_application_command_error(ctx, e):
+	await ctx.respond(f"⚠️ This command could not be fulfilled due to the following error:\n`{e}`")
+	print(f"Uncaught exception thrown: {e}")
+	raise e
+
 async def response_with_file_fallback(ctx: discord.ApplicationContext,message,eph=False):
 	if len(message) > 2000:
 		filedata = BytesIO(message.encode('utf-8'))
