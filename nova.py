@@ -191,6 +191,7 @@ async def spawn_enemies(ctx,
 	msg = f"Spawning {sum(list(enemy_box.values()))} {faction} enemies ({used_hp} HP):"
 	for guy in sorted(list(enemy_box.keys())):
 		msg += f"\n- {guy} **x{enemy_box[guy]}**"
+	msg += f"\n-# Refer to NOVA core rulebook pages 45 thru 57 for relevant stat blocks."
 	
 	await response_with_file_fallback(ctx,msg)
 
