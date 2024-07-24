@@ -166,6 +166,7 @@ async def spawn_enemies(ctx,
 						faction: discord.Option(str, "The faction to spawn enemies from.",required=True,choices=factions),
 						hp: discord.Option(int, "The amount of HP to use. May be overridden slightly.",required=True,min_value=1)):
 	
+	await ctx.defer()
 	faction_index = enemy_data[faction]
 	possible_enemies = list(faction_index.keys())
 	used_hp = 0
