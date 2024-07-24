@@ -1,0 +1,41 @@
+{
+	"HELLIONS": {
+		"Shock Trooper": {
+			"Sniper": 2,
+			"Grenadier": 2,
+			"Chaingunner": 2
+		},
+		"Firebug": 3,
+		"Carver": {
+			"Heavy": 3,
+			"Lance": 2,
+			"Sawblade": 2
+		},
+		"Haze Tamer": 4
+	},
+	"CORVUS DOMINION": {
+		"Crow": 3,
+		"Raven": 2,
+		"Magpie": 4,
+		"Jay": 3,
+		"Rook": 4
+	},
+	"HAZE DWELLERS": {
+		"Wyvern Brood": 2,
+		"Eclipser": 6,
+		"Glitter Moth": {
+			"Acidic": 4,
+			"Dreamy": 4,
+			"Cataclysmic": 4
+		},
+		"Devil Toad": 4,
+		"Dusk Fang": 4
+	},
+	"LUNAR CULT": {
+		"Lunar Heretic": 1,
+		"Umbral Prophet": 3,
+		"Dusklily Chemist": 2,
+		"Moonstone Paladin": 3,
+		"Umbral Walker": 1
+	}
+}

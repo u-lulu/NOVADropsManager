@@ -148,6 +148,45 @@ async def generate_drops(ctx):
 	del channel_data[c]
 	save_channel_data()
 
+print("Loading enemy data")
+enemy_file = open('token.json')
+enemy_data = json.load(enemy_file)
+enemy_file.close()
+
+factions = list(enemy_data.keys())
+
+@bot.command(description="Roll up enemies with an amount of total max HP.")
+async def spawn_enemies(ctx,
+						faction: discord.Option(str, "The faction to spawn enemies from.",required=True,choices=factions),
+						hp: discord.Option(int, "The amount of HP to use. May be overridden slightly.",required=True,min_value=1)):
+	
+	faction_index = enemy_data[faction]
+	possible_enemies = list(faction_index.keys())
+	used_hp = 0
+
+	enemy_box = dict()
+
+	while used_hp < hp:
+		selected_enemy = rnd.choice(possible_enemies)
+		val = faction_index[selected_enemy]
+
+		if val is int:
+			enemy_box[selected_enemy] = enemy_box.get(selected_enemy,0) + 1
+			used_hp += val
+		elif val is dict:
+			variant = rnd.choice(list(val.keys()))
+			full_name = f"{selected_enemy} ({variant})"
+			enemy_box[full_name] = enemy_box.get(full_name,0) + 1
+			used_hp += val[variant]
+		else:
+			raise Exception(f"Unexpected type in enemy data: {type(val)}")
+	
+	msg = f"Spawning {sum(list(enemy_box.values()))} {faction} enemies ({used_hp} HP):"
+	for guy in sorted(list(enemy_box.keys())):
+		msg += f"\n- {guy} **x{enemy_box[guy]}**"
+	
+	await response_with_file_fallback(ctx,msg)
+
 @bot.command(description="Shows the help info for this bot.")
 async def help(ctx):
 	await ctx.defer()
