@@ -176,10 +176,10 @@ async def spawn_enemies(ctx,
 		selected_enemy = rnd.choice(possible_enemies)
 		val = faction_index[selected_enemy]
 
-		if val is int:
+		if type(val) is int:
 			enemy_box[selected_enemy] = enemy_box.get(selected_enemy,0) + 1
 			used_hp += val
-		elif val is dict:
+		elif type(val) is dict:
 			variant = rnd.choice(list(val.keys()))
 			full_name = f"{selected_enemy} ({variant})"
 			enemy_box[full_name] = enemy_box.get(full_name,0) + 1
