@@ -149,7 +149,7 @@ async def generate_drops(ctx):
 	save_channel_data()
 
 print("Loading enemy data")
-enemy_file = open('token.json')
+enemy_file = open('enemies.json')
 enemy_data = json.load(enemy_file)
 enemy_file.close()
 
