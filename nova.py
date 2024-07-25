@@ -178,12 +178,12 @@ async def spawn_enemies(ctx,
 		val = faction_index[selected_enemy]
 
 		if type(val) is int:
-			enemy_box[selected_enemy] = (enemy_box.get(selected_enemy,(0,val))[0] + 1,val)
+			enemy_box[selected_enemy] = (enemy_box.get(selected_enemy,0)[0] + 1,val)
 			used_hp += val
 		elif type(val) is dict:
 			variant = rnd.choice(list(val.keys()))
 			full_name = f"{selected_enemy} ({variant})"
-			enemy_box[full_name] = (enemy_box.get(full_name,(0,val[variant]))[0] + 1, val[variant])
+			enemy_box[full_name] = (enemy_box.get(full_name,0)[0] + 1, val[variant])
 			used_hp += val[variant]
 		else:
 			raise Exception(f"Unexpected type in enemy data: {type(val)}")
