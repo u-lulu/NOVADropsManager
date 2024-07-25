@@ -178,19 +178,19 @@ async def spawn_enemies(ctx,
 		val = faction_index[selected_enemy]
 
 		if type(val) is int:
-			enemy_box[selected_enemy] = (enemy_box.get(selected_enemy,0)[0] + 1,val)
+			enemy_box[selected_enemy] = enemy_box.get(selected_enemy,0) + 1
 			used_hp += val
 		elif type(val) is dict:
 			variant = rnd.choice(list(val.keys()))
 			full_name = f"{selected_enemy} ({variant})"
-			enemy_box[full_name] = (enemy_box.get(full_name,0)[0] + 1, val[variant])
+			enemy_box[full_name] = enemy_box.get(full_name,0) + 1
 			used_hp += val[variant]
 		else:
 			raise Exception(f"Unexpected type in enemy data: {type(val)}")
 	
 	msg = f"Spawning {sum(list(enemy_box.values()))} {faction} enemies ({used_hp} HP):"
 	for guy in sorted(list(enemy_box.keys())):
-		msg += f"\n- {guy} ({enemy_box[guy][1]} HP) **x{enemy_box[guy][0]}**"
+		msg += f"\n- {guy} **x{enemy_box[guy]}**"
 	msg += f"\n-# Refer to NOVA core rulebook pages 45 thru 57 for relevant stat blocks."
 	
 	await response_with_file_fallback(ctx,msg)
