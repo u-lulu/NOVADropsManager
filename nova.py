@@ -81,8 +81,21 @@ async def on_application_command(ctx):
 	else:
 		print(f"/{ctx.command.qualified_name}")
 
+@bot.command(description="Rolls a skill check.")
+async def roll_check(ctx,attribute_score: discord.Option(int,"Your score in the roll's relevant attribute", requred=True,min_value=1,max_value=10)):
+	results = [d6() for i in range(attribute_score)]
+	best = max(results)
+	msg = "".join([num_to_die[val] for val in results]) + f" = **{best}**: "
+	if best >= 5:
+		msg += "**TOTAL SUCCESS**, full effect with no consequence"
+	elif best >= 3:
+		msg += "**SUCCESS**, with a consequence"
+	else:
+		msg += "**FAILURE**, with a consequence"
+	await ctx.respond(msg)
+
 @bot.command(description="Add drops to the drop pool in this channel.")
-async def add_drops(ctx, amount: discord.Option(discord.SlashCommandOptionType.integer, "The number of drops to add (or remove, if negative).", required=False, default=1)):
+async def add_drops(ctx, amount: discord.Option(int, "The number of drops to add (or remove, if negative).", required=False, default=1)):
 	if amount == 0:
 		await ctx.respond("You cannot add 0 drops to the pool.",ephemeral=True)
 		return
