@@ -159,11 +159,9 @@ enemy_file = open('enemies.json')
 enemy_data = json.load(enemy_file)
 enemy_file.close()
 
-all_enemy_types_faction = {}
+enemy_data["ANY"] = {}
 for faction in enemy_data.values():
-	all_enemy_types_faction.update(faction)
-
-enemy_data["ANY"] = all_enemy_types_faction
+	enemy_data["ANY"].update(faction)
 
 factions = list(enemy_data.keys())
 
