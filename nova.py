@@ -159,6 +159,12 @@ enemy_file = open('enemies.json')
 enemy_data = json.load(enemy_file)
 enemy_file.close()
 
+all_enemy_types_faction = {}
+for faction in enemy_data.values():
+	all_enemy_types_faction.update(faction)
+
+enemy_data["ANY"] = all_enemy_types_faction
+
 factions = list(enemy_data.keys())
 
 @bot.command(description="Roll up enemies with an amount of total max HP.")
