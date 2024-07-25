@@ -170,7 +170,7 @@ factions = list(enemy_data.keys())
 @bot.command(description="Roll up enemies with an amount of total max HP.")
 async def spawn_enemies(ctx,
 						faction: discord.Option(str, "The faction to spawn enemies from.",required=True,choices=factions),
-						hp: discord.Option(int, "The amount of HP to use. May be overridden slightly.",required=True,min_value=1)):
+						hp: discord.Option(int, "The amount of HP to use. May be overridden slightly.",required=True,min_value=1,max_value=999999)):
 	
 	await ctx.defer()
 	faction_index = enemy_data[faction]
@@ -178,6 +178,9 @@ async def spawn_enemies(ctx,
 	used_hp = 0
 
 	enemy_box = dict()
+
+	if hp > 999999 or hp < 1:
+		return await ctx.respond("Illegal arguments.",ephemeral=True)
 
 	while used_hp < hp:
 		selected_enemy = rnd.choice(possible_enemies)
